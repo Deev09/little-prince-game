@@ -1,25 +1,140 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>The Little Prince's Journey</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Little Prince — Journey to the Rose</title>
     <style>
-      body {
+      * { box-sizing: border-box; }
+      html, body {
         margin: 0;
         padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background: #000033;
+        overflow: hidden;
+        background: #050311;
+        font-family: Georgia, 'Times New Roman', serif;
+        height: 100%;
+        user-select: none;
       }
-      canvas {
-        border-radius: 8px;
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      canvas { display: block; position: fixed; inset: 0; z-index: 0; }
+
+      /* ---------- HUD ---------- */
+      #ui { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
+
+      #crosshair {
+        position: absolute; left: 50%; top: 50%;
+        width: 6px; height: 6px; margin: -3px 0 0 -3px;
+        border-radius: 50%;
+        background: rgba(245, 215, 146, 0.9);
+        box-shadow: 0 0 8px rgba(245, 215, 146, 0.8);
+      }
+
+      #roseMarker {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        font-size: 20px;
+        text-align: center;
+        color: #ffb3c6;
+        text-shadow: 0 0 10px rgba(255, 120, 160, 0.9);
+        transition: opacity 0.3s;
+      }
+      #roseMarker span {
+        display: block;
+        font-size: 12px;
+        letter-spacing: 1px;
+        color: #f5d78e;
+      }
+
+      #toast {
+        position: absolute; top: 10%; left: 50%;
+        transform: translateX(-50%);
+        font-style: italic;
+        font-size: 26px;
+        color: #f5d78e;
+        text-shadow: 0 0 18px rgba(245, 215, 146, 0.5);
+        opacity: 0;
+        transition: opacity 0.6s;
+        white-space: nowrap;
+      }
+
+      #hint {
+        position: absolute; bottom: 22px; left: 50%;
+        transform: translateX(-50%);
+        font-size: 13px;
+        letter-spacing: 1.5px;
+        color: rgba(230, 220, 200, 0.55);
+        white-space: nowrap;
+      }
+
+      #vignette {
+        position: absolute; inset: 0;
+        background: radial-gradient(ellipse at center, transparent 45%, rgba(255, 40, 40, 0.55) 100%);
+        opacity: 0;
+        transition: opacity 0.15s;
+      }
+
+      /* ---------- Overlay (menu / death / win) ---------- */
+      #overlay {
+        position: fixed; inset: 0; z-index: 10;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        text-align: center;
+        background: radial-gradient(ellipse at 50% 40%, rgba(20, 12, 50, 0.88), rgba(3, 2, 12, 0.96));
+        color: #f5d78e;
+        cursor: pointer;
+        transition: opacity 0.5s;
+        padding: 0 24px;
+      }
+      #overlay.hidden { opacity: 0; pointer-events: none; }
+      #ovStars { font-size: 20px; letter-spacing: 18px; color: #cdb8ff; opacity: 0.8; }
+      #ovTitle {
+        margin: 18px 0 4px;
+        font-size: 54px;
+        font-weight: normal;
+        font-style: italic;
+        letter-spacing: 3px;
+        text-shadow: 0 0 30px rgba(245, 215, 146, 0.35);
+      }
+      #ovSub { margin: 0 0 26px; font-size: 20px; letter-spacing: 5px; color: #cdb8ff; }
+      #ovQuote {
+        max-width: 560px;
+        font-style: italic;
+        font-size: 16px;
+        line-height: 1.7;
+        color: rgba(235, 225, 205, 0.8);
+        margin: 0 0 36px;
+      }
+      #ovAction {
+        font-size: 15px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        padding: 12px 34px;
+        border: 1px solid rgba(245, 215, 146, 0.5);
+        border-radius: 40px;
+        animation: pulse 2.2s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { box-shadow: 0 0 0 rgba(245, 215, 146, 0); opacity: 0.8; }
+        50% { box-shadow: 0 0 22px rgba(245, 215, 146, 0.35); opacity: 1; }
       }
     </style>
   </head>
   <body>
+    <div id="ui">
+      <div id="vignette"></div>
+      <div id="crosshair"></div>
+      <div id="roseMarker">🌹<span id="roseDist"></span></div>
+      <div id="toast"></div>
+      <div id="hint">W&nbsp;A&nbsp;S&nbsp;D move &nbsp;·&nbsp; mouse look &nbsp;·&nbsp; SPACE jump, twice more in flight to soar &nbsp;·&nbsp; SHIFT run &nbsp;·&nbsp; R return to your planet</div>
+    </div>
+
+    <div id="overlay">
+      <div id="ovStars">✦ ✧ ✦</div>
+      <h1 id="ovTitle">The Little Prince</h1>
+      <p id="ovSub">JOURNEY TO THE ROSE</p>
+      <p id="ovQuote">“All men have stars, but they are not the same things for different people. For some, who are travelers, the stars are guides…”<br /><br />Hop from planet to planet across the stars. Beware of falling asteroids — and find your way back to the rose.</p>
+      <div id="ovAction">Click to begin</div>
+    </div>
+
     <script type="module" src="src/index.js"></script>
   </body>
-</html> 
+</html>

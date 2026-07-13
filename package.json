@@ -1,13 +1,13 @@
 {
   "name": "little-prince-game",
   "version": "1.0.0",
-  "description": "A 2D game where the Little Prince jumps between planets searching for his rose",
+  "description": "A 3D first-person game where the Little Prince hops between planets, dodging asteroids to reach his rose",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html"
   },
   "dependencies": {
-    "phaser": "^3.70.0"
+    "three": "^0.161.0"
   },
   "devDependencies": {
     "parcel": "^2.11.0",
